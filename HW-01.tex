@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+
+% set these commands
+\newcommand{\course}{CSCI 347}
+\newcommand{\proj}{Homework 01}
+
+\usepackage{macros}
+
+
+\begin{document}
+
+{ ~\\
+    \course \\ 
+    \proj \\ 
+}
+
+\section*{Problem 1 (2 points)}
+
+What are the two main types of attributes typically found in data? 
+
+There are typically numerical attributes and categorical attributes in data.
+
+\section*{Problem 2 (14 points)}
+
+Consider the following data matrix
+
+$$
+    D = \begin{matrix}
+            & X_1   & X_2   & X_3 \\
+        x_1 &  0.3  & 23    & 5.6 \\
+        x_2 &  0.4  &  1    & 5.2 \\
+        x_3 &  1.8  &  4    & 5.2 \\
+        x_4 &  6.0  & 50    & 5.1 \\
+        x_5 & -0.5  & 34    & 5.7 \\
+        x_6 &  0.4  & 19    & 5.4 \\
+        x_7 &  1.1  & 11    & 5.5 \\
+    \end{matrix}
+$$
+
+\begin{enumerate}
+    \item (2 points) What is the estimated mean of $X_3$?
+    \newline
+    \newline (5.6 + 5.2 + 5.2 + 5.1 + 5.7 + 5.4 + 5.5) / 7 = $\bf{5.385}$
+    \item (2 points) What is the estimated covariance between $X_1$ and $X_3$?
+    \newline
+
+    \newline X1 mean = 1.36, X3 mean = 5.39.
+    \newline $\frac{1}{6}$((.3-1.36)(5.6-5.39)+(.4-1.36)(5.2-5.39)+(1.8-1.36)(5.2-5.39)+(6-1.36)(5.1-5.39)+(-.5-1.36)(5.7-5.39)+(.4-1.36)(5.4-5.39)+(1.1-1.36)(5.5-5.39) = $\bf{-0.347}$
+    \item (2 points) What is the estimated multi-dimensional mean of $D$?
+    \newline
+    \newline $\frac{1}{7}$ ((.3 23 5.6)+(.4 1 5.2)+(1.8 4 5.2)+(6 50 5.1)+(-.5 34 5.7)+(.4 19 5.4)+(1.1 11 5.5) = $\bf{(1.357, 20.286, 5.386)}$
+    \item (2 points) What is the estimated variance of $X_2$?
+    \newline
+    \newline $\frac{1}{6}$ ((23-20.29)$^2$+(1-20.29)$^2$+(4-20.29)$^2$+(50-20.29)$^2$+(34-20.29)$^2$+(19-20.29)$^2$+(11-20.29)$^2$ = $\bf{300.571}$
+    \item (2 points) What is the covariance matrix of $D$?
+    \newline $\sigma_{13} = -0.347$. (Question 2)
+    \newline
+    \newline$\frac{1}{6}$((.3-1.36)(23-20.29)+(.4-1.36)(1-20.29)+(1.8-1.36)(4-20.29)+(6-1.36)(50-20.29)+(-.5-1.36)(34-20.29)+(.4-1.36)(29-20.29)+(1.1-1.36)(11-20.29) = $\sigma_{12} = 20.748$.
+    \newline
+    \newline$\frac{1}{6}$((5.6-5.39)(23-20.29)+(5.2-5.39)(1-20.29)+(5.2-5.39)(4-20.29)+(5.1-5.39)(50-20.29)+(5.7-5.39)(34-20.29)+(5.4-5.39)(29-20.29)+(5.5-5.39)(11-20.29) = $\sigma_{23} = 0.321$
+    \newline
+    \newline $\sigma^2_2 = 300.571$. (Question 4)
+    \newline
+    \newline $\frac{1}{6}$ ((.3-1.36)$^2$+(.4-1.36)$^2$+(1.8-1.36)$^2$+(6-1.36)$^2$+(-.5-1.36)$^2$+(.4-1.36)$^2$+(1.1-1.36)$^2$ = $\sigma^2_1 = 4.7$
+    \newline
+    \newline $\frac{1}{6}$ ((5.6-5.38)$^2$+(5.2-5.38)$^2$+(5.2-5.38)$^2$+(5.1-5.38)$^2$+(5.7-5.38)$^2$+(5.4-5.38)$^2$+(5.5-5.38)$^2$ =
+    \newline$\sigma^2_3 = 0.05$
+    
+    $$
+    \sum = \begin{matrix}
+            
+         4.7  & 20.748  & -0.347 \\
+         20.748  &  300.571  & 0.321 \\
+         -0.347  &  0.321    & 0.05 \\
+    \end{matrix}
+$$
+    
+    \item (2 points) What is the estimated correlation between $X_1$ and $X_3$?
+    \newline
+    \newline $\hat{\rho_{13}} = \frac{\hat{\sigma_{13}}}{\hat{\sigma_{1} * \hat{\sigma_{3}}}}$
+    \newline $\hat{\rho_{13}} = \frac{-0.347}{2.16 * 0.224}$
+    \newline $\hat{\rho_{13}} =  \bf{-.717}$
+    \item (2 points) What is the total variance $D$?
+    \newline
+    \newline $\sigma^2_1 = 4.7$, $\sigma^2_2 = 300.571$, $\sigma^2_3 = 0.05$
+    \newline $Var(D) = 4.7 + 300.571 + 0.05 = \bf{305.321}$
+\end{enumerate}
+
+\section*{Problem 3 (6 points)}
+
+Given $a, b \in \R^4$ (that is a fancy way of saying that $a$ and $b$ are
+4-dimensional vectors with real values) where
+\begin{eqnarray*}
+    a &=& \begin{bmatrix} 2.0  & 5.0 & -2.6 & 6.0 \end{bmatrix} \\
+    b &=& \begin{bmatrix} 15.0 & 2.5 &  4.0 & 4.0 \end{bmatrix}
+\end{eqnarray*}
+
+\begin{enumerate}
+    \item (2 points) What is $\|a-b\|_2$?
+    \newline
+    \newline $\|a-b\|_2$ = $\sqrt{((2-15)^2 + (5-2.5)^2 + (-2.6-4)^2 + (6-4)^2} = \bf{14.927}$
+    \item (2 points) What is $\|a-b\|_1$?
+    \newline
+    \newline$\|a-b\|_1$ = $|2-15| + |5-2.5| + |-2.6-4| + |6-4| = \bf{24.1}$
+    \item (2 points) What is the cosine of the angle between $a$ and $b$?
+    \newline
+    \newline Question 2 Equation / Question 1 Equation = $\bf{0.4082}$
+\end{enumerate}
+
+\section*{Problem 4 (3 points)}
+
+The following questions reference the Heart Disease data set from the UCI
+Machine Learning Repository:
+
+\url{https://archive.ics.uci.edu/ml/datasets/Heart+Disease}
+
+\begin{enumerate}
+    \item (1 point) One attribute is named ``cigs''.  What information is stored
+    in the ``cigs'' attribute?
+    \newline
+    \newline ''cigs'' stores the number of cigarettes per day smoked by the patient.
+    \item (1 point) How many rows (i.e., observations, entities, instances) are
+    there in the data set?
+    \newline
+    \newline There are $\bf{303}$ instances in the data set.
+    \item (1 point) How many attributes are there in the data set?
+    \newline
+    \newline This database contains $\bf{76}$ attributes, but all published experiments refer to using a subset of 14 of them.
+    \end{enumerate}
+
+\section*{Tips and Acknowledgements}
+
+Make sure to submit your answer as a PDF on Gradescope and Brightspace. Make sure
+to show your work. Include any code snippets you used to generate an answer,
+using comments in the code to clearly indicate which problem corresponds to
+which code.
+
+
+{\bf Acknowledgements:} Homework problems adapted from assignments of
+Veronika Strnadova-Neeley.
+
+\end{document}
