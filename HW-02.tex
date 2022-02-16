@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+
+% set these commands
+\newcommand{\course}{CSCI 347}
+\newcommand{\proj}{Homework 02}
+
+\usepackage{macros}
+\usepackage{listings}
+
+
+\begin{document}
+
+{ ~\\
+    \course \\ 
+    \proj \\ 
+}
+
+Show your work. Include any code snippets you used to generate an answer, using
+comments in the code to clearly indicate which problem corresponds to which code
+
+Consider the following data matrix
+
+$$
+    D = \begin{matrix}
+            & X_1    & X_2   & X_3   \\
+        x_1 & red    & yes   & north \\
+        x_2 & blue   & no    & south \\
+        x_3 & yellow & no    & east  \\
+        x_4 & yellow & no    & west  \\
+        x_5 & red    & yes   & north \\
+        x_6 & yellow & yes   & north \\
+        x_7 & blue   & no    & west  \\
+    \end{matrix}
+$$
+
+Answer the following:
+
+\begin{enumerate}
+    \item (5 points) Use matplotlib to create a bar plot for the counts of the
+    variable $X_2$.  Make sure to label the axis.
+    \newline \includegraphics{347hwplot.PNG}
+    \newline
+    \newline \begin{lstlisting}
+        import numpy as np
+        import matplotlib.pyplot as plt
+        
+        d = np.array([['red', 'yes', 'north'], ['blue', 'no', 'south'],
+                       ['yellow', 'no', 'east'], ['yellow', 'no', 'west'],
+                       ['red', 'yes', 'north'], ['yellow', 'yes', 'north'],
+                       ['blue', 'no', 'west']])
+        
+        X2 = d[:,1]
+        countY = sum(X2 == 'yes')
+        countN = sum(X2 == 'no')
+        
+        plt.bar(x = ('yes','no'), height = (countY, countN), 
+                color = ('blue', 'yellow'))
+        plt.show()
+
+    \end{lstlisting}
+    \item (2 points) Use one-hot encoding to transform all the categorical
+    attributes to numerical values.  Write down the transformed data matrix. (In
+    what follows, we will referred to the transformed data matrix as Y).
+    \newline $$
+    Y = \begin{matrix}
+            & X_1r & X_1b & X_1y & X_2y & X_2n & X_3n & X_3e & X_3s & X_3w\\
+        x_1 & 1   & 0    & 0    & 1     & 0   & 1    & 0    & 0    & 0\\
+        x_2 & 0   & 1    & 0    & 0     & 1   & 0    & 0    & 1    & 0\\
+        x_3 & 0   & 0    & 1    & 0     & 1   & 0    & 1    & 0    & 0\\
+        x_4 & 0   & 0    & 1    & 0     & 1   & 0    & 0    & 0    & 1\\
+        x_5 & 1   & 0    & 0    & 1     & 0   & 1    & 0    & 0    & 0\\
+        x_6 & 0   & 0    & 1    & 1     & 0   & 1    & 0    & 0    & 0\\
+        x_7 & 0   & 1    & 0    & 0     & 1   & 0    & 0    & 0    & 1\\
+    \end{matrix}
+$$
+    \newline
+    \item (2 points) What is the Euclidean distance between instance $x_2$
+    (second row) and $x_7$ (seventh row) after applying one-hot encoding.
+    \newline $\sqrt{(0-0)^2+(1-1)^2+(0-0)^2+(0-0)^2+(1-1)^2+(0-0)^2+(0-0)^2+(1-0)^2+(0-1)^2}$
+    \newline $= \sqrt{2} = \bf1.4142$
+
+    \item (2 points) What is the cosine similarity (cosine of the angle)
+    between data instance $x_2$ and data instance $x_7$ after applying one-hot
+    encoding?
+    \newline$x_2 \cdot x_7 = 0*0 + 1*1 + 0*0 + 0*0 + 1*1 + 0*0 + 0*0 + 1*0 + 0*1 = 2$
+    \newline$||x_2|| = \sqrt{(0)^2 + (1)^2 + (0)^2 + (0)^2 + (1)^2 + (0)^2 + (0)^2 + (1)^2 + (0)^2} = \sqrt{3} $
+    \newline$||x_7|| = \sqrt{(0)^2 + (1)^2 + (0)^2 + (0)^2 + (1)^2 + (0)^2 + (0)^2 + (0)^2 + (1)^2} = \sqrt{3} $
+    \newline$\frac{2}{\sqrt{3}*\sqrt{3}} = \bf\frac{2}{3}$
+    \newpage
+    \item (2 points) What is the Hamming distance between data instance $x_2$
+    and data instance $x_7$ after applying one-hot encoding?
+    \newline $0\bigoplus0 + 1\bigoplus1 + 0\bigoplus0 + 0\bigoplus0 + 1\bigoplus1 + 0\bigoplus0 + 0\bigoplus0 + 1\bigoplus0 + 0\bigoplus1$
+    \newline $=0 + 0 + 0 + 0 + 0 + 0 + 0 + 1 + 1 = \bf2$
+    \item (2 points) What is the Jaccard similarity between data instance $x_2$
+    and $x_7$ after applying one-hot encoding?
+    \newline $\frac{0\bigwedge0 + 1\bigwedge1 + 0\bigwedge0 + 0\bigwedge0 + 1\bigwedge1 + 0\bigwedge0 + 0\bigwedge0 + 1\bigwedge0 + 0\bigwedge1}{0\bigvee0 + 1\bigvee1 + 0\bigvee0 + 0\bigvee0 + 1\bigvee1 + 0\bigvee0 + 0\bigvee0 + 1\bigvee0 + 0\bigvee1}$
+    \newline$=\frac{0+1+0+0+1+0+0+0+0}{0+1+0+0+1+0+0+1+1} = \bf\frac{1}{2}$
+    \item (2 points) What is the multivariate mean of $Y$?
+    \newline \begin{lstlisting}
+        import pandas as pd
+        
+        data =  [[1, 0, 0, 1, 0, 1, 0 ,0 ,0],
+                 [0, 1, 0, 0, 1, 0, 0, 1, 0],
+                 [0, 0, 1, 0, 1, 0, 1, 0, 0],
+                 [0, 0, 1, 0, 1, 0, 0, 0, 1],
+                 [1, 0, 0, 1, 0, 1, 0, 0, 0],
+                 [0, 0, 1, 1, 0, 1, 0, 0, 0],
+                 [0, 1, 0, 0, 1, 0, 0, 0, 1]]
+        
+        df = pd.DataFrame(data)
+        
+        x = df.mean()
+        print(x)
+    \end{lstlisting}
+    \newline multivariate mean = $\bf0.285714, 0.285714, 0.428571, 0.428571, 0.571429,$
+    \newline $\bf0.428571, 0.142857, 0.142857, 0.285714$
+    \item (2 points) What is the estimated variance of the first column of $Y$?
+    \newline$\frac{1}{7}(1+0+0+0+1+0+0) = 0.286$
+    \newline$\frac{1}{6}(1-0.286)^2+(0-0.286)^2+(0-0.286)^2+(0-0.286)^2+(1-0.286)^2+(0-0.286)^2+(0-0.286)^2)$
+    \newline$= \bf0.238$
+    \newpage
+    \item (2 points) What is the resulting matrix after applying standard
+    (z-score) normalization to the matrix $Y$.  In the following, we will call
+    this matrix $Z$.
+    \newline 
+    \newline \begin{lstlisting}
+        import numpy as np
+                
+        data =  [[1, 0, 0, 1, 0, 1, 0 ,0 ,0],
+                 [0, 1, 0, 0, 1, 0, 0, 1, 0],
+                 [0, 0, 1, 0, 1, 0, 1, 0, 0],
+                 [0, 0, 1, 0, 1, 0, 0, 0, 1],
+                 [1, 0, 0, 1, 0, 1, 0, 0, 0],
+                 [0, 0, 1, 1, 0, 1, 0, 0, 0],
+                 [0, 1, 0, 0, 1, 0, 0, 0, 1]]
+                
+        myArray = np.array(data)       
+        
+        mean = np.mean(myArray, axis = 0)
+        std = np.std(myArray, axis = 0)
+        print(mean)
+        print("-----")
+        print(std)
+        print("------------")
+        Z = ((myArray-mean)/std)
+        print(Z)
+    \end{lstlisting}
+$$      Z = \begin{matrix}
+            & X_1r & X_1b & X_1y & X_2y & X_2n & X_3n & X_3e & X_3s & X_3w\\
+        x_1 & 1.58   & -0.63    & -0.86    & 1.15     & -1.15   & 1.15    & -0.41    & -0.41    & -0.63\\
+        x_2 & -0.63   & 1.58    & -0.86    & -0.86     & 0.86   & -0.86    & -0.41    & 2.45    & -0.63\\
+        x_3 & -0.63   & -0.63    & 1.15    & -0.86     & 0.86   & -0.86    & 2.45    & -0.41    & -0.63\\
+        x_4 & -0.63   & -0.63    & 1.15    & -0.86     & 0.86   & -0.86    & -0.41    & -0.41    & 1.58\\
+        x_5 & 1.58   & -0.63    & -0.86    & 1.15     & -1.15   & 1.15    & -0.41    & -0.41    & -0.63\\
+        x_6 & -0.63   & -0.63    & 1.15    & 1.15     & -1.15   & 1.15     & -0.41    & -0.41    & -0.63\\
+        x_7 & -0.63   & 1.15    & -0.86    & -0.86     & 0.86   & -0.86    & -0.41    & -0.41    & 1.58\\
+    \end{matrix}
+$$
+    \item (2 points) What is the multivariate mean of $Z$?
+    \newline\begin{lstlisting}
+        Zmean = np.mean(Z, axis = 0)
+        print(Zmean)
+    \end{lstlisting}
+    [3.17206578e-17 3.17206578e-17 3.17206578e-17 1.58603289e-174.75809868e-17 1.58603289e-1 6.34413157e-17 3.17206578e-17 3.17206578e-17] = [0 0 0 0 0 0 0]
+    \newpage
+    \item (2 points) Let $z_i$ be the $i$-th row of $Z$.  What is Euclidean
+    distance between $z_2$ and $z_7$?
+    \newline\begin{lstlisting}
+        temp = Z[1] - Z[6]
+        sumsq = np.dot(temp.T, temp)
+        print(np.sqrt(sumsq))
+    \end{lstlisting}
+    $=\bf 3.614784$
+\end{enumerate}
+
+{\bf Acknowledgements:} Homework problems adapted from assignments of
+Veronika Strnadova-Neeley.
+
+\end{document}
