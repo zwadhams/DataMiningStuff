@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+
+% set these commands
+\newcommand{\course}{CSCI 347}
+\newcommand{\proj}{Homework 03}
+
+\usepackage{macros}
+
+
+\begin{document}
+
+{ ~\\
+    \course \\ 
+    \proj \\ 
+}
+
+Show your work. Include any code snippets you used to generate an answer, using
+comments in the code to clearly indicate which problem corresponds to which code
+
+Consider the following graph:
+
+\begin{tikzpicture}[main/.style = {draw, circle}]
+
+\node[main] (3) {3};
+\node[main] (1) [above left of=3] {1};
+\node[main] (2) [above right of=3] {2};
+\node[main] (4) [below left of=3] {4};
+\node[main] (5) [below right of=3] {5};
+
+
+\node[main] (6) [right of=2] {6};
+\node[main] (12) [below right of=6] {12};
+\node[main] (7) [above right of=12] {7};
+\node[main] (8) [below right of=7] {8};
+\node[main] (9) [below of=8] {9};
+\node[main] (10) [left of=9] {10};
+\node[main] (11) [left of=10] {11};
+
+\draw[-] (1) -- (2);
+\draw[-] (1) -- (3);
+\draw[-] (2) -- (3);
+
+\draw[-] (3) -- (4);
+\draw[-] (3) -- (5);
+\draw[-] (3) -- (12);
+
+\draw[-] (4) -- (5);
+\draw[-] (5) -- (11);
+
+\draw[-] (6) -- (7);
+\draw[-] (6) -- (12);
+\draw[-] (7) -- (12);
+\draw[-] (8) -- (12);
+\draw[-] (9) -- (12);
+\draw[-] (10) -- (12);
+\draw[-] (11) -- (12);
+
+\end{tikzpicture}
+
+Answer the following:
+
+\begin{enumerate}
+
+    \item (3 points) Without using networkx or other graph analysis packages
+    (though you may use them to check your answer), find the closeness
+    centrality of vertices 3 and 12.
+    \newline $cc(x_3) = \frac{1}{1+1+0+1+1+2+2+2+2+2+2+1} = \frac{1}{17}$
+    \newline $cc(x_{12}) = \frac{1}{2+2+1+2+2+1+1+1+1+1+1+0} = \frac{1}{15}$
+
+    \item (3 points) Without using networkx or other graph analysis packages
+    (though you may use them to check your answer), find the eccentricity of
+    vertices 3, 12, and 11.
+    \newline $e(x_3) = maxdist(x_3,x_i) = 2$
+    \newline $e(x_{12}) = maxdist(x_{12},x_i) = 2$
+    \newline $e(x_{11}) = maxdist(x_{11},x_i) = 3$
+    \item (3 points) Without using networkx or other graph analysis packages
+    (though you may use them to check your answer), find the clustering
+    coefficient of vertex 3.
+    \newline $C(x_3) = \frac{num of edges}{num of possible edges} = \frac{2}{10} = \frac{1}{5}$
+    \item (3 points) Without using networkx or other graph analysis packages
+    (though you may use them to check your answer), find the clustering
+    coefficient of the graph.
+    \newline $C(X) = C(x_1) + C(x_2) + C(x_{...}) + C(x_{12}) / 12$
+    \newline $C(x_1) = \frac{1}{1} = 1$
+    \newline $C(x_2) = \frac{1}{1} = 1$
+    \newline $C(x_3) = \frac{1}{5}$
+    \newline $C(x_4) = \frac{1}{1} = 1$
+    \newline $C(x_5) = \frac{1}{3}$
+    \newline $C(x_6) = \frac{1}{1} = 1$
+    \newline $C(x_7) = \frac{1}{1} = 1$
+    \newline $C(x_8) = 0$
+    \newline $C(x_9) = 0$
+    \newline $C(x_{10}) = 0$
+    \newline $C(x_{11}) = 0$
+    \newline $C(x_{12}) = \frac{1}{21}$
+    \newline $C(X) = 5.58 / 12 = \bf0.465$
+    \item (3 points) Find the betweenness centrality of vertices 3 and 12. You
+    may use networkx or other graph analysis packages, but include the code used
+    to generate your answer in your submission.
+    \newline \begin{lstlisting}
+        import matplotlib.pyplot as plt
+        import networkx as nx
+        G = nx.Graph()
+        G.add_node(1)
+        G.add_nodes_from([1,2,3,4,5,6,7,8,9,10,11,12])
+        G.add_edges_from([(1, 2), (1, 3), (2, 3), (3, 4), (3, 5), (3, 12),
+                          (4, 5), (5, 11), (6, 7), (6, 12), (7, 12), (8, 12),
+                          (9, 12), (10, 12), (11, 12)])
+        
+        between = nx.betweenness_centrality(G)
+        print("betweeness centrality: ", between)
+        
+        
+        nx.draw(G, with_labels=True)
+        plt.draw()
+        plt.show()
+
+    \end{lstlisting}  
+    \newline Returns betweeness centrality $x_3 = 0.491, x_{12} = 0.763$
+
+    \item (3 points) Using networkx, find the prestige centrality of vertices 3
+    and 12. Include the code used to generate the answer. (Note that networkx
+    calls the prestige centrality ``eigenvector centrality'')
+    \newline \begin{lstlisting}
+        ##Continuing with code from questions #5
+        prestige = nx.eigenvector_centrality(G)
+        print(prestige)
+    \end{lstlisting}
+    \newline Returns prestige centrality of $x_3 = 0.465, x_{12} = 0.531$
+    \newpage
+    \item (3 points) Use Python to create a plot for the degree distribution of
+    this graph.  Include the code used to generate the plot as well as the plot
+    in your submission.
+    \newline \begin{lstlisting}
+        deg_vals = dict(nx.degree(G)).values()
+        plt.hist(deg_vals)
+        plt.xlabel('degree')
+        plt.ylabel('number of nodes with degree')
+        plt.show()
+     \end{lstlisting}
+     
+     \includegraphics{347hw2plot.PNG}
+
+\end{enumerate}
+
+{\bf Acknowledgements:} Homework problems adapted from assignments of
+Veronika Strnadova-Neeley.
+
+\end{document}
